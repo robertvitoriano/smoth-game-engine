@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <iostream>
 #include <GLFW/glfw3.h>
 
@@ -11,7 +12,9 @@ int main()
   {
     return -1;
   }
-
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   GLFWwindow *window = glfwCreateWindow(1280, 780, "SmothGameEngine", nullptr, nullptr);
 
   if (window == nullptr)
@@ -22,9 +25,19 @@ int main()
   }
 
   glfwSetWindowPos(window, 0, 150);
+  glfwMakeContextCurrent(window);
+
+  if (glewInit() != GLEW_OK)
+  {
+    glfwTerminate();
+    return -1;
+  }
 
   while (!glfwWindowShouldClose(window))
   {
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(window);
     glfwPollEvents();
   }
 
