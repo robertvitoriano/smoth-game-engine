@@ -5,6 +5,35 @@
 #include <string>
 #include <vector>
 
+struct Vec2 {
+  float x = 0.0f;
+  float y = 0.0f;
+};
+
+Vec2 offsetVec;
+
+void keyCallback(GLFWwindow* window, int key, int scanCode, int action,
+                 int mods) {
+  if (action == GLFW_PRESS) {
+    switch (key) {
+      case GLFW_KEY_UP:
+        offsetVec.y++;
+        break;
+      case GLFW_KEY_DOWN:
+        offsetVec.y--;
+        break;
+      case GLFW_KEY_LEFT:
+        offsetVec.x--;
+        break;
+      case GLFW_KEY_RIGHT:
+        offsetVec.x++;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
 int main() {
 #if defined(__linux__)
   glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
@@ -33,17 +62,21 @@ int main() {
     return -1;
   }
 
+  glfwSetKeyCallback(window, keyCallback);
+
   std::string vertexShaderProgram = R"(
     #version 330 core
     layout (location = 0) in vec3 position;
     layout (location = 1) in vec3 color;
+    
+    uniform vec2 uOffset;
     
     out vec3 vColor;
     
     void main()
     {
       vColor = color;
-      gl_Position = vec4(position.x, position.y, position.z, 1.0);
+      gl_Position = vec4(position.x + uOffset.x, position.y + uOffset.y, position.z, 1.0);
     }
   )";
   // ### VERTEX SHADER ####
@@ -173,6 +206,8 @@ std::vector<unsigned int> indices = {
 
   GLint uColorLocation = glGetUniformLocation(shaderProgram, "uColor");
 
+  GLint uOffsetLocation = glGetUniformLocation(shaderProgram, "uOffset");
+
   while (!glfwWindowShouldClose(window)) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -180,6 +215,9 @@ std::vector<unsigned int> indices = {
     glUseProgram(shaderProgram);
 
     glUniform4f(uColorLocation, 0.1f, 0.0f, 0.0f, 1.0f);
+
+    glUniform2f(uOffsetLocation, offsetVec.x, offsetVec.y);
+
     glBindVertexArray(vao);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
