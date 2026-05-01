@@ -6,6 +6,7 @@ project (SmothGameEngine)
 
 set(PROJECT_SOURCE_FILES
   source/main.cpp
+  source/game.cpp
 )
 # Add the application
 include_directories(source)
