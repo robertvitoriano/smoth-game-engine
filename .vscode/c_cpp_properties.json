@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "smoth-game-engine",
+      "compilerPath": "/usr/bin/clang",
+      "intelliSenseMode": "linux-clang-x64",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "includePath": [
+        "${workspaceFolder}/thirdparty/glfw-3.4/include",
+        "${workspaceFolder}/thirdparty/glew/include",
+        "${workspaceFolder}/source"
+      ]
+    }
+  ],
+  "version": 4
+}
