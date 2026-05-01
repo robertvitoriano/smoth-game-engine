@@ -69,9 +69,10 @@ int main() {
     
     out vec4 fragColor;
     in vec3 vColor;
+    uniform vec4 uColor;
     
     void main(){
-      fragColor = vec4(vColor,1.0);
+      fragColor = vec4(vColor,1.0) * uColor;
     }
       
   )";
@@ -170,11 +171,15 @@ std::vector<unsigned int> indices = {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
+  GLint uColorLocation = glGetUniformLocation(shaderProgram, "uColor");
+
   while (!glfwWindowShouldClose(window)) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     // Draw in back buffer
     glUseProgram(shaderProgram);
+
+    glUniform4f(uColorLocation, 0.1f, 0.0f, 0.0f, 1.0f);
     glBindVertexArray(vao);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
