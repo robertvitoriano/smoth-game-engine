@@ -36,9 +36,13 @@ int main() {
   std::string vertexShaderProgram = R"(
     #version 330 core
     layout (location = 0) in vec3 position;
+    layout (location = 1) in vec3 color;
+    
+    out vec3 vColor;
     
     void main()
     {
+      vColor = color;
       gl_Position = vec4(position.x, position.y, position.z, 1.0);
     }
   )";
@@ -62,11 +66,14 @@ int main() {
   // ### FRAGMENT SHADER ####
   std::string fragmentShaderSource = R"(
     #version 330 core
+    
     out vec4 fragColor;
+    in vec3 vColor;
     
     void main(){
-      fragColor = vec4(1.0,0.0,0.0,1.0);
+      fragColor = vec4(vColor,1.0);
     }
+      
   )";
 
   GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -103,12 +110,21 @@ int main() {
       0.0f,  // top vertice coordinates
       0.5f,
       0.0f,
+      1.0f,  // top vertice Color
+      0.0f,
+      0.0f,
       -0.5f,  // left vertice coordinates
       -0.5f,
+      0.0f,
+      0.0f,  // left vertice Color
+      1.0f,
       0.0f,
       0.5f,  // right-bottom vertice coordinates
       -0.5f,
       0.0f,
+      0.0f,  // right-bottom vertice Color
+      0.0f,
+      1.0f,
   };
 
   // ############### CREATE BUFFERS FOR SENDING VERTICES TO GPU
@@ -130,11 +146,17 @@ int main() {
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-  // total size of a single vertex
-  float stride = 3 * sizeof(float);
+  // length of  a single vertice data (coordinates + color)
+  float stride = 6 * sizeof(float);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+  void* verticesOffset = (void*)0;
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, verticesOffset);
   glEnableVertexAttribArray(0);
+
+  void* colorOffset = (void*)(3 * sizeof(float));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, colorOffset);
+  glEnableVertexAttribArray(1);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
