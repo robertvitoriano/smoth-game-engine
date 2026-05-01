@@ -106,29 +106,25 @@ int main() {
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
 
-  std::vector<float> vertices = {
-      0.0f,  // top vertice coordinates
-      0.5f,
-      0.0f,
-      1.0f,  // top vertice Color
-      0.0f,
-      0.0f,
-      -0.5f,  // left vertice coordinates
-      -0.5f,
-      0.0f,
-      0.0f,  // left vertice Color
-      1.0f,
-      0.0f,
-      0.5f,  // right-bottom vertice coordinates
-      -0.5f,
-      0.0f,
-      0.0f,  // right-bottom vertice Color
-      0.0f,
-      1.0f,
-  };
+  // clang-format off
+std::vector<float> vertices = {
+  0.5f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f, // top right vertice
+  -0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // top left vertice
+  -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left vertice
+   0.5f,-0.5f, 0.0f,  1.0f, 0.0f, 1.0f, // bottom right vertice
+};
+  // clang-format on
 
-  // ############### CREATE BUFFERS FOR SENDING VERTICES TO GPU
-  // MEMORY################# Create and activate buffer
+  // clang-format off
+// indices for showing how we should draw our vertices
+std::vector<unsigned int> indices = {
+  0,1,2, // first triangle
+  0,2,3  // second triangle
+};
+  // clang-format on
+
+  // ############### CREATE BUFFERS FOR SENDING VERTICES TO GPU MEMORy
+  // ################# Create and activate buffer
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -140,11 +136,24 @@ int main() {
                GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+  // CREATE EBO (ELement buffer object) FOR STORING INDICES TO INDICATE HOW WE
+  // SHOULD DRAW
+
+  GLuint ebo;
+  glGenBuffers(1, &ebo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+               indices.size() * sizeof(unsigned int),
+               indices.data(),
+               GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
   // CREATE AND BIND VERTEX ARRAY OBJECT (VAO)
   GLuint vao;
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
   // length of  a single vertice data (coordinates + color)
   float stride = 6 * sizeof(float);
@@ -167,7 +176,8 @@ int main() {
     // Draw in back buffer
     glUseProgram(shaderProgram);
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     // swap to front buffer
     glfwSwapBuffers(window);
