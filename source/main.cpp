@@ -6,7 +6,7 @@ int main() {
   eng::Engine engine;
   engine.setApplication(game);
 
-  if (engine.init()) {
+  if (engine.init(1280, 720)) {
     engine.run();
   }
   engine.destroy();

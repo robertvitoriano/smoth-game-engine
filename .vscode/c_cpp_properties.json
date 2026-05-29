@@ -7,8 +7,8 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "includePath": [
-                "${workspaceFolder}/thirdparty/glfw-3.4/include",
-                "${workspaceFolder}/thirdparty/glew/include",
+                "${workspaceFolder}/engine/thirdparty/glfw-3.4/include",
+                "${workspaceFolder}/engine/thirdparty/glew/include",
                 "${workspaceFolder}/source",
                 "${workspaceFolder}/engine/source"
             ]
