@@ -5,9 +5,9 @@ class Application {
  public:
   virtual bool init() = 0;
   // delata time in seconds
-  virtual bool update(float deltaTime) = 0;
+  virtual void update(float deltaTime) = 0;
 
-  virtual bool destroy() = 0;
+  virtual void destroy() = 0;
 
   void setNeedsToBeClosed(bool value);
   bool needsToBeClosed() const;
