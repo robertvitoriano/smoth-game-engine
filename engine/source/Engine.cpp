@@ -84,4 +84,6 @@ Application* Engine::getApplication() { return m_application.get(); }
 
 InputManager& Engine::getInputManager() {}
 
+GraphicsAPI& Engine::getGraphicsAPI() { return m_graphicsAPI; }
+
 }  // namespace eng
