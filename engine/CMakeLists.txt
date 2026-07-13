@@ -7,6 +7,9 @@ set(PROJECT_SOURCE_FILES
     source/Engine.cpp
     source/Application.h
     source/Application.cpp
+    source/input/InputManager.h
+    source/input/InputManager.cpp
+
 )
 
 include_directories(source)
@@ -25,7 +28,7 @@ set_property(TARGET glew_s PROPERTY FOLDER GLEW)
 set_property(TARGET glew PROPERTY FOLDER GLEW)
 
 # Link all thirdparty libraries
-target_link_libraries(${PROJECT_NAME} 
-    glfw 
+target_link_libraries(${PROJECT_NAME}
+    glfw
     glew_s
 )

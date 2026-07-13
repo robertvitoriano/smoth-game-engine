@@ -7,6 +7,21 @@
 
 #include "Application.h"
 namespace eng {
+
+void keyCallback(GLFWwindow* window, int key, int, int action, int) {
+  auto& inputManager = eng::Engine::getInstance().getInputManager();
+  if (action == GLFW_PRESS) {
+    inputManager.setKeyPressed(key, true);
+  } else if (action == GLFW_RELEASE) {
+    inputManager.setKeyPressed(key, false);
+  }
+}
+
+Engine& Engine::getInstance() {
+  static Engine instance;
+  return instance;
+}
+
 bool Engine::init(int width, int height) {
   if (!m_application) {
     return false;
@@ -27,6 +42,8 @@ bool Engine::init(int width, int height) {
     glfwTerminate();
     return false;
   }
+
+  glfwSetKeyCallback(m_window, keyCallback);
 
   glfwMakeContextCurrent(m_window);
 
@@ -64,5 +81,7 @@ void Engine::destroy() {
 
 void Engine::setApplication(Application* app) { m_application.reset(app); }
 Application* Engine::getApplication() { return m_application.get(); }
+
+InputManager& Engine::getInputManager() {}
 
 }  // namespace eng
