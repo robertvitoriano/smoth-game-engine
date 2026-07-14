@@ -13,6 +13,10 @@ set(PROJECT_SOURCE_FILES
     source/graphics/ShaderProgram.h
     source/graphics/GraphicsAPI.h
     source/graphics/GraphicsAPI.cpp
+    source/render/Material.h
+    source/render/Material.cpp
+
+
 
 )
 

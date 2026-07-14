@@ -62,4 +62,9 @@ std::shared_ptr<ShaderProgram> GraphicsAPI::createShaderProgram(
 void GraphicsAPI::bindShaderProgram(ShaderProgram* shaderProgram) {
   shaderProgram->bind();
 }
+void GraphicsAPI::bindMaterial(Material* material) {
+  if (material) {
+    material->bind();
+  }
+}
 }  // namespace eng

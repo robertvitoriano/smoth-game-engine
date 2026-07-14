@@ -7,4 +7,7 @@ class Game : public eng::Application {
   bool init() override;
   void update(float deltaTime) override;
   void destroy() override;
+
+ private:
+  eng::Material m_material;
 };

@@ -37,7 +37,8 @@ bool Game::init() {
   auto& graphicsAPI = eng::Engine::getInstance().getGraphicsAPI();
   auto shaderProgram = graphicsAPI.createShaderProgram(vertexShaderProgram,
                                                        fragmentShaderSource);
-
+  m_material.setShaderProgram(shaderProgram);
+  std::cout << "SHADER PROGRAM IS" << shaderProgram << std::endl;
   return true;
 };
 void Game::update(float deltaTime) {
